@@ -11,7 +11,7 @@ describe('API Routes', () => {
     return client.end();
   });
 
-  describe('/api/cats', () => {
+  describe('/api/sneks', () => {
 
     let user;
 
@@ -31,128 +31,128 @@ describe('API Routes', () => {
       user = response.body;
     });
 
-    let felix = {
+    let sweaterNoodle = {
       id: expect.any(Number),
-      name: 'Felix',
-      type: 'Tuxedo',
-      url: 'cats/felix.png',
-      year: 1892,
-      lives: 5,
-      isSidekick: false
-    };
-  
-    let duchess = {
-      id: expect.any(Number),
-      name: 'Duchess',
-      type: 'Angora',
-      url: 'cats/duchess.jpeg',
-      year: 1970,
-      lives: 9,
-      isSidekick: false
-    };
-  
-    let hobbs = {
-      id: expect.any(Number),
-      name: 'Hobbs',
-      type: 'Orange Tabby',
-      url: 'cats/hobbs.jpeg',
-      year: 1985,
-      lives: 6,
-      isSidekick: true
+      name: 'Sweater Noodle',
+      type: 'Boop Rope',
+      url: '',
+      species: 'ball python',
+      accessory: 'sweater',
+      isDeadlyWithTheVenom: false
     };
 
-    it('POST felix to /api/cats', async () => {
-      felix.userId = user.id;
+    let bladeSlither = {
+      id: expect.any(Number),
+      name: 'Blade Slither',
+      type: 'Danger Noodle',
+      url: '',
+      species: 'unknown',
+      accessory: 'dual-wield short sword',
+      isDeadlyWithTheVenom: true
+    };
+
+    let patricia = {
+      id: expect.any(Number),
+      name: 'Patricia',
+      type: 'Boop Rope',
+      url: '',
+      species: 'ball python',
+      accessory: 'jeweled necklace',
+      isDeadlyWithTheVenom: false
+    };
+
+    it('POST sweaterNoodle to /api/sneks', async () => {
+      sweaterNoodle.userId = user.id;
       const response = await request
-        .post('/api/cats')
-        .send(felix);
+        .post('/api/sneks')
+        .send(sweaterNoodle);
 
       expect(response.status).toBe(200);
-      expect(response.body).toEqual(felix);
-      
-      // Update local client felix object
-      felix = response.body;
+      expect(response.body).toEqual(sweaterNoodle);
+
+      // Update local client sweaterNoodle object
+      sweaterNoodle = response.body;
     });
 
-    it('PUT updated felix to /api/cats/:id', async () => {
-      felix.lives = 2;
-      felix.name = 'Mr. Felix';
+    it('PUT updated sweaterNoodle to /api/sneks/:id', async () => {
+      sweaterNoodle.lives = 2;
+      sweaterNoodle.name = 'Sweater Noodle';
 
       const response = await request
-        .put(`/api/cats/${felix.id}`)
-        .send(felix);
+        .put(`/api/sneks/${sweaterNoodle.id}`)
+        .send(sweaterNoodle);
 
       expect(response.status).toBe(200);
-      expect(response.body).toEqual(felix);
+      expect(response.body).toEqual(sweaterNoodle);
 
     });
 
-    it('GET list of cats from /api/cats', async () => {
-      duchess.userId = user.id;
-      const r1 = await request.post('/api/cats').send(duchess);
-      duchess = r1.body;
+    it('GET list of sneks from /api/sneks', async () => {
+      patricia.userId = user.id;
+      const r1 = await request.post('/api/sneks').send(patricia);
+      patricia = r1.body;
 
-      hobbs.userId = user.id;
-      const r2 = await request.post('/api/cats').send(hobbs);
-      hobbs = r2.body;
+      bladeSlither.userId = user.id;
+      const r2 = await request.post('/api/sneks').send(bladeSlither);
+      bladeSlither = r2.body;
 
-      const response = await request.get('/api/cats');
+      const response = await request.get('/api/sneks');
 
       expect(response.status).toBe(200);
-      
-      const expected = [felix, duchess, hobbs].map(cat => {
-        return { 
+
+      const expected = [sweaterNoodle, patricia, bladeSlither].map(cat => {
+        return {
           userName: user.name,
-          ...cat 
+          ...cat
         };
       });
-      
+
       expect(response.body).toEqual(expect.arrayContaining(expected));
     });
 
-    it('GET hobbs from /api/cats/:id', async () => {
-      const response = await request.get(`/api/cats/${hobbs.id}`);
+    it('GET bladeSlither from /api/sneks/:id', async () => {
+      const response = await request.get(`/api/sneks/${bladeSlither.id}`);
       expect(response.status).toBe(200);
-      expect(response.body).toEqual({ ...hobbs, userName: user.name });
+      expect(response.body).toEqual({ ...bladeSlither, userName: user.name });
     });
 
-    it('DELETE hobbs from /api/cats/:id', async () => {
-      const response = await request.delete(`/api/cats/${hobbs.id}`);
+    it('DELETE bladeSlither from /api/sneks/:id', async () => {
+      const response = await request.delete(`/api/sneks/${bladeSlither.id}`);
       expect(response.status).toBe(200);
-      expect(response.body).toEqual(hobbs);
+      expect(response.body).toEqual(bladeSlither);
 
-      const getResponse = await request.get('/api/cats');
+      const getResponse = await request.get('/api/sneks');
       expect(getResponse.status).toBe(200);
-      expect(getResponse.body.find(cat => cat.id === hobbs.id)).toBeUndefined();
+      expect(getResponse.body.find(cat => cat.id === bladeSlither.id)).toBeUndefined();
 
     });
 
-  });  
+  });
 
   describe('seed data tests', () => {
 
     beforeAll(() => {
       execSync('npm run setup-db');
     });
-  
-    it('GET /api/cats', async () => {
+
+    it('GET /api/sneks', async () => {
       // act - make the request
-      const response = await request.get('/api/cats');
+      const response = await request.get('/api/sneks');
 
       // was response OK (200)?
       expect(response.status).toBe(200);
 
       // did it return some data?
       expect(response.body.length).toBeGreaterThan(0);
-      
+
       // did the data get inserted?
       expect(response.body[0]).toEqual({
         id: expect.any(Number),
         name: expect.any(String),
         type: expect.any(String),
         url: expect.any(String),
-        year: expect.any(Number),
-        lives: expect.any(Number),
+        species: expect.any(String),
+        accessory: expect.any(String),
         isSidekick: expect.any(Boolean),
         userId: expect.any(Number),
         userName: expect.any(String)
