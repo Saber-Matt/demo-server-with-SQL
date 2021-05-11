@@ -75,7 +75,7 @@ describe('API Routes', () => {
     });
 
     it('PUT updated sweaterNoodle to /api/sneks/:id', async () => {
-      sweaterNoodle.lives = 2;
+      sweaterNoodle.type = 'string';
       sweaterNoodle.name = 'Sweater Noodle';
 
       const response = await request
@@ -100,10 +100,10 @@ describe('API Routes', () => {
 
       expect(response.status).toBe(200);
 
-      const expected = [sweaterNoodle, patricia, bladeSlither].map(cat => {
+      const expected = [sweaterNoodle, patricia, bladeSlither].map(snek => {
         return {
           userName: user.name,
-          ...cat
+          ...snek
         };
       });
 
@@ -123,7 +123,7 @@ describe('API Routes', () => {
 
       const getResponse = await request.get('/api/sneks');
       expect(getResponse.status).toBe(200);
-      expect(getResponse.body.find(cat => cat.id === bladeSlither.id)).toBeUndefined();
+      expect(getResponse.body.find(snek => snek.id === bladeSlither.id)).toBeUndefined();
 
     });
 
@@ -153,7 +153,7 @@ describe('API Routes', () => {
         url: expect.any(String),
         species: expect.any(String),
         accessory: expect.any(String),
-        isSidekick: expect.any(Boolean),
+        isDeadlyWithTheVenom: expect.any(Boolean),
         userId: expect.any(Number),
         userName: expect.any(String)
       });
