@@ -25,7 +25,7 @@ async function run() {
     const user = data[0].rows[0];
 
     await Promise.all(
-      sneks.map(cat => {
+      sneks.map(snek => {
         return client.query(`
         INSERT INTO sneks (name, type, url, species, accessory, is_deadly_with_the_venom, user_id)
           VALUES ($1, $2, $3, $4, $5, $6, $7);
