@@ -17,21 +17,21 @@ async function run() {
         password_hash VARCHAR(512) NOT NULL
       );
     
-      CREATE TABLE cats (
+      CREATE TABLE sneks (
         id SERIAL PRIMARY KEY NOT NULL,
         name VARCHAR(512) NOT NULL,
-        type VARCHAR(128) NOT NULL,
+        type VARCHAR(512) NOT NULL,
         url VARCHAR(1024) NOT NULL,
-        year INTEGER NOT NULL,
-        lives INTEGER NOT NULL,
-        is_sidekick BOOLEAN DEFAULT FALSE NOT NULL,
+        species VARCHAR(512) NOT NULL,
+        accessory VARCHAR(512) NOT NULL,
+        is_deadly_with_the_venom BOOLEAN DEFAULT FALSE,
         user_id INTEGER NOT NULL REFERENCES users(id)
       );
-    `);
+      `);
 
     console.log('create tables complete');
   }
-  catch(err) {
+  catch (err) {
     // problem? let's see the error...
     console.log(err);
   }
